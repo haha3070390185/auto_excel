@@ -90,8 +90,10 @@ class AdditionalFeatures:
                     int((current_step / total_steps) * 80),
                     "正在清除多余空格..."
                 )
-                for col in df.select_dtypes(include=['object']).columns:
-                    df[col] = df[col].astype(str).str.strip()
+                for col in df.columns:
+                    df[col] = df[col].apply(
+                        lambda x: x.strip() if isinstance(x, str) else x
+                    )
                 current_step += 1
             
             if options.get('standardize_dates', False):

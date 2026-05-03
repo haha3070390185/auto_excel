@@ -106,8 +106,10 @@ class ExcelFormatter:
         df = pd.read_excel(input_path)
         
         if options.get('trim_spaces', True):
-            for col in df.select_dtypes(include=['object']).columns:
-                df[col] = df[col].astype(str).str.strip()
+            for col in df.columns:
+                df[col] = df[col].apply(
+                    lambda x: x.strip() if isinstance(x, str) else x
+                )
         
         if options.get('remove_duplicates', False):
             df = df.drop_duplicates()
